@@ -59,6 +59,8 @@ const Game = (() => {
     let player2;
     let currentPlayer;
     let gameActive = false;
+    let player1Score = 0;
+    let player2Score = 0;
 
     const getCurrentPlayer = () => currentPlayer;
     const isGameActive = () => gameActive;
@@ -72,6 +74,7 @@ const Game = (() => {
             if (GameBoard.checkWin()) {
                 gameActive = false;
                 displayResult(currentPlayer.getName() + ' wins!');
+                updateScore(currentPlayer);
             } else if (GameBoard.checkDraw()) {
                 gameActive = false;
                 displayResult('It\'s a draw!');
@@ -92,6 +95,7 @@ const Game = (() => {
         GameBoard.resetBoard();
         renderBoard();
         displayResult('');
+        updateScoreDisplay();
     };
 
     const restartGame = () => {
@@ -100,6 +104,20 @@ const Game = (() => {
         currentPlayer = player1;
         renderBoard(); // Call renderBoard after restarting the game
         displayResult('');
+    };
+
+    const updateScore = (player) => {
+        if (player === player1) {
+            player1Score++;
+        } else {
+            player2Score++;
+        }
+        updateScoreDisplay();
+    };
+
+    const updateScoreDisplay = () => {
+        document.getElementById('player1Score').textContent = `${player1.getName()}: ${player1Score}`;
+        document.getElementById('player2Score').textContent = `${player2.getName()}: ${player2Score}`;
     };
 
     return {
