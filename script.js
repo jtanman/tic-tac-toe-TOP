@@ -115,6 +115,12 @@ const Game = (() => {
         updateScoreDisplay();
     };
 
+    const resetScores = () => {
+        player1Score = 0;
+        player2Score = 0;
+        updateScoreDisplay();
+    };
+
     const updateScoreDisplay = () => {
         document.getElementById('player1Score').textContent = `${player1.getName()}: ${player1Score}`;
         document.getElementById('player2Score').textContent = `${player2.getName()}: ${player2Score}`;
@@ -125,7 +131,8 @@ const Game = (() => {
         isGameActive,
         makeMove,
         startGame,
-        restartGame
+        restartGame,
+        resetScores
     };
 })();
 
@@ -147,6 +154,9 @@ const renderBoard = () => {
 };
 
 const handleMove = (index) => {
+    if (!Game.isGameActive()) {
+        Game.restartGame();
+    }
     if (Game.isGameActive() && Game.makeMove(index)) {
         renderBoard();
     }
@@ -160,6 +170,7 @@ const displayResult = (message) => {
 document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('startGame');
     const restartButton = document.getElementById('restart');
+    const resetScoreButton = document.getElementById('resetScore');
 
     startButton.addEventListener('click', () => {
         const player1Name = document.getElementById('player1Name').value || 'Player 1';
@@ -169,6 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restartButton.addEventListener('click', () => {
         Game.restartGame();
+    });
+
+    resetScoreButton.addEventListener('click', () => {
+        Game.resetScores();
     });
 
     renderBoard();
